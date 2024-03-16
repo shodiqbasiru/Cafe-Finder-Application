@@ -1,10 +1,11 @@
-package com.msfb.cafe_finder_application.service;
+package com.msfb.cafe_finder_application.service.impl;
 
 import com.msfb.cafe_finder_application.dto.request.CafeRequest;
 import com.msfb.cafe_finder_application.dto.request.PageCafeRequest;
 import com.msfb.cafe_finder_application.dto.request.UpdateCafeRequest;
 import com.msfb.cafe_finder_application.entity.Cafe;
 import com.msfb.cafe_finder_application.repository.CafeRepository;
+import com.msfb.cafe_finder_application.service.CafeService;
 import com.msfb.cafe_finder_application.specification.CafeSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -26,15 +28,17 @@ public class CafeServiceImpl implements CafeService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Cafe createCafe(CafeRequest cafeRequest) {
+    public void createCafe(CafeRequest cafeRequest) {
         Cafe cafe = Cafe.builder()
+                .id(UUID.randomUUID().toString())
                 .cafeName(cafeRequest.getCafeName())
                 .phoneNumber(cafeRequest.getPhoneNumber())
                 .location(cafeRequest.getLocation())
                 .address(cafeRequest.getAddress())
                 .urlLocation(cafeRequest.getUrlLocation())
                 .build();
-        return cafeRepository.save(cafe);
+
+        cafeRepository.insert(cafe);
     }
 
     @Transactional(readOnly = true)
@@ -63,7 +67,7 @@ public class CafeServiceImpl implements CafeService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Cafe updateCafe(UpdateCafeRequest request) {
+    public void updateCafe(UpdateCafeRequest request) {
         Cafe cafe = getCafeById(request.getId());
 
         cafe.setCafeName(request.getCafeName());
@@ -72,7 +76,8 @@ public class CafeServiceImpl implements CafeService {
         cafe.setAddress(request.getAddress());
         cafe.setUrlLocation(request.getUrlLocation());
 
-       return cafeRepository.saveAndFlush(cafe);
+        cafeRepository.updateCafe(cafe);
+
     }
 
     @Transactional(rollbackFor = Exception.class)

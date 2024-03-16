@@ -9,10 +9,10 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface CafeService {
-    Cafe createCafe(CafeRequest cafeRequest);
+    void createCafe(CafeRequest cafeRequest);
     Cafe getCafeById(String id);
     Page<Cafe> getAllCafes(PageCafeRequest request);
     List<Cafe> getCafeByCafeName(String cafeName);
-    Cafe updateCafe(UpdateCafeRequest cafeRequest);
+    void updateCafe(UpdateCafeRequest cafeRequest);
     void deleteById(String id);
 }

@@ -27,11 +27,10 @@ public class CafeController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<CommonResponse<Cafe>> create(@RequestBody CafeRequest request) {
-        Cafe result = cafeService.createCafe(request);
+       cafeService.createCafe(request);
         CommonResponse<Cafe> response = CommonResponse.<Cafe>builder()
                 .statusCode(HttpStatus.CREATED.value())
                 .message("Created a new cafe successfully")
-                .data(result)
                 .build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -120,11 +119,10 @@ public class CafeController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<CommonResponse<Cafe>> update(@RequestBody UpdateCafeRequest request) {
-        Cafe result = cafeService.updateCafe(request);
+        cafeService.updateCafe(request);
         CommonResponse<Cafe> response = CommonResponse.<Cafe>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message("Cafe updated successfully")
-                .data(result)
                 .build();
         return ResponseEntity.ok(response);
     }

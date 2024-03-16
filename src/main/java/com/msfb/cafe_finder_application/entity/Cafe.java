@@ -3,6 +3,7 @@ package com.msfb.cafe_finder_application.entity;
 import com.msfb.cafe_finder_application.constant.TableConstant;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.domain.Persistable;
 
 @Setter
 @Getter
@@ -13,7 +14,6 @@ import lombok.*;
 @Table(name = TableConstant.CAFE_TABLE)
 public class Cafe {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @Column(name = "cafe_name", nullable = false)
