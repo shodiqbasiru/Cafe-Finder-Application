@@ -6,11 +6,13 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface CafeRepository extends JpaRepository<Cafe, String>, JpaSpecificationExecutor<Cafe>{
 
     @Modifying
@@ -28,8 +30,9 @@ public interface CafeRepository extends JpaRepository<Cafe, String>, JpaSpecific
     )
     void insert(Cafe cafe);
 
+    @Transactional
     @Query(nativeQuery = true, value = "SELECT * FROM tb_cafe WHERE id = :id")
-    Optional<Cafe> findById(@Param("id") String id);
+    Optional<Cafe> findCafeById(@Param("id") String id);
 
     @Query(nativeQuery = true, value = "SELECT * FROM tb_cafe WHERE cafe_name LIKE CONCAT('%', :cafeName, '%')")
     List<Cafe> findAllByCafeName(@Param("cafeName") String cafeName);
@@ -51,5 +54,5 @@ public interface CafeRepository extends JpaRepository<Cafe, String>, JpaSpecific
     @Modifying
     @Transactional
     @Query(nativeQuery = true, value = "DELETE FROM tb_cafe WHERE id = :id")
-    void deleteById(@Param("id") String id);
+    void deleteMenuById(@Param("id") String id);
 }
