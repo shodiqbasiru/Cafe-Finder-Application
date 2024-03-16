@@ -19,7 +19,7 @@ public class Review {
     private String id;
 
     @Column(name = "rating", nullable = false)
-    private Integer rating;
+    private String rating;
 
     @Column(name = "comment", nullable = false)
     private String comment;
