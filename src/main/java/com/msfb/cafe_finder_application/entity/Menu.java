@@ -13,15 +13,18 @@ import lombok.*;
 @Table(name = TableConstant.MENU_TABLE)
 public class Menu {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @Column(name = "menu_name", nullable = false)
     private String menuName;
 
+    @Column(name = "price", nullable = false)
+    private Long price;
+
     @Column(name = "description", nullable = false)
     private String description;
 
-    @OneToOne(mappedBy = "menu")
-    private Price price;
+    @ManyToOne
+    @JoinColumn(name = "cafe_id", nullable = false)
+    private Cafe cafe;
 }
