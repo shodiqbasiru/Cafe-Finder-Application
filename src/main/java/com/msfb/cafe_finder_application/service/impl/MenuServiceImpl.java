@@ -2,6 +2,7 @@ package com.msfb.cafe_finder_application.service.impl;
 
 import com.msfb.cafe_finder_application.dto.request.MenuRequest;
 import com.msfb.cafe_finder_application.dto.request.UpdateMenuRequest;
+import com.msfb.cafe_finder_application.dto.response.MenuResponse;
 import com.msfb.cafe_finder_application.entity.Cafe;
 import com.msfb.cafe_finder_application.entity.Menu;
 import com.msfb.cafe_finder_application.repository.MenuRepository;
@@ -41,8 +42,26 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    public List<Menu> getAll() {
-        return menuRepository.findAllMenus();
+    public MenuResponse findMenuById(String id) {
+        Menu menu = findById(id);
+        return MenuResponse.builder()
+                .id(menu.getId())
+                .menuName(menu.getMenuName())
+                .price(menu.getPrice())
+                .description(menu.getDescription())
+                .cafeId(menu.getCafe().getId())
+                .build();
+    }
+
+    @Override
+    public List<MenuResponse> getAll() {
+        return menuRepository.findAllMenus().stream().map(menu -> MenuResponse.builder()
+                .id(menu.getId())
+                .menuName(menu.getMenuName())
+                .price(menu.getPrice())
+                .description(menu.getDescription())
+                .cafeId(menu.getCafe().getId())
+                .build()).toList();
     }
 
     @Override

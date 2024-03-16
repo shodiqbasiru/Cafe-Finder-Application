@@ -1,9 +1,11 @@
 package com.msfb.cafe_finder_application.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.msfb.cafe_finder_application.constant.TableConstant;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.domain.Persistable;
+
+import java.util.List;
 
 @Setter
 @Getter
@@ -31,4 +33,7 @@ public class Cafe {
     @Column(name = "url_location", nullable = false)
     private String urlLocation;
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "cafe")
+    private List<Menu> menus;
 }

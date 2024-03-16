@@ -4,6 +4,7 @@ import com.msfb.cafe_finder_application.constant.RouteApiConstant;
 import com.msfb.cafe_finder_application.dto.request.MenuRequest;
 import com.msfb.cafe_finder_application.dto.request.UpdateMenuRequest;
 import com.msfb.cafe_finder_application.dto.response.CommonResponse;
+import com.msfb.cafe_finder_application.dto.response.MenuResponse;
 import com.msfb.cafe_finder_application.entity.Menu;
 import com.msfb.cafe_finder_application.service.MenuService;
 import lombok.RequiredArgsConstructor;
@@ -37,9 +38,9 @@ public class MenuController {
             path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<CommonResponse<Menu>> getById(@PathVariable String id) {
-        Menu result = menuService.findById(id);
-        CommonResponse<Menu> response = CommonResponse.<Menu>builder()
+    public ResponseEntity<CommonResponse<MenuResponse>> getById(@PathVariable String id) {
+        MenuResponse result = menuService.findMenuById(id);
+        CommonResponse<MenuResponse> response = CommonResponse.<MenuResponse>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message("Menu found")
                 .data(result)
@@ -50,12 +51,12 @@ public class MenuController {
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<CommonResponse<?>> getAll() {
-        List<Menu> menus = menuService.getAll();
-        CommonResponse<?> response = CommonResponse.builder()
+    public ResponseEntity<CommonResponse<List<MenuResponse>>> getAll() {
+        List<MenuResponse> result = menuService.getAll();
+        CommonResponse<List<MenuResponse>> response = CommonResponse.<List<MenuResponse>>builder()
                 .statusCode(HttpStatus.OK.value())
-                .message("Get all menus successfully")
-                .data(menus)
+                .message("Menu found")
+                .data(result)
                 .build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

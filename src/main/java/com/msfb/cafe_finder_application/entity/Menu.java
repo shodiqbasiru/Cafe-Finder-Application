@@ -1,5 +1,7 @@
 package com.msfb.cafe_finder_application.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.msfb.cafe_finder_application.constant.TableConstant;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,6 +26,7 @@ public class Menu {
     @Column(name = "description", nullable = false)
     private String description;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "cafe_id", nullable = false)
     private Cafe cafe;

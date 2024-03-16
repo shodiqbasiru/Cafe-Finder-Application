@@ -78,6 +78,7 @@ public class CafeController {
                         .location(cafe.getLocation())
                         .address(cafe.getAddress())
                         .urlLocation(cafe.getUrlLocation())
+                        .menus(cafe.getMenus())
                         .build())
                 .toList();
 
