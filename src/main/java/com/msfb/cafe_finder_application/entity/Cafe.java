@@ -36,4 +36,8 @@ public class Cafe {
     @JsonManagedReference
     @OneToMany(mappedBy = "cafe")
     private List<Menu> menus;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "cafe")
+    private List<Review> reviews;
 }

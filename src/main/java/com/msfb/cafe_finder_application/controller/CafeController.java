@@ -41,7 +41,7 @@ public class CafeController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<CommonResponse<Cafe>> getById(@PathVariable String id) {
-        Cafe result = cafeService.getCafeById(id);
+        Cafe result = cafeService.findCafeById(id);
         CommonResponse<Cafe> response = CommonResponse.<Cafe>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message("Cafe found")
@@ -78,7 +78,8 @@ public class CafeController {
                         .location(cafe.getLocation())
                         .address(cafe.getAddress())
                         .urlLocation(cafe.getUrlLocation())
-                        .menus(cafe.getMenus())
+                        .menus(cafe.getMenus().isEmpty() ? null : cafe.getMenus())
+                        .reviews(cafe.getReviews().isEmpty() ? null : cafe.getReviews())
                         .build())
                 .toList();
 

@@ -43,7 +43,7 @@ public class CafeServiceImpl implements CafeService {
 
     @Transactional(readOnly = true)
     @Override
-    public Cafe getCafeById(String id) {
+    public Cafe findCafeById(String id) {
         return cafeRepository.findCafeById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cafe not found"));
     }
@@ -69,7 +69,7 @@ public class CafeServiceImpl implements CafeService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateCafe(UpdateCafeRequest request) {
-        Cafe cafe = getCafeById(request.getId());
+        Cafe cafe = findCafeById(request.getId());
 
         cafe.setCafeName(request.getCafeName());
         cafe.setLocation(request.getLocation());
@@ -84,6 +84,7 @@ public class CafeServiceImpl implements CafeService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteById(String id) {
-        cafeRepository.deleteMenuById(id);
+        Cafe cafe = findCafeById(id);
+        cafeRepository.deleteMenuById(cafe.getId());
     }
 }

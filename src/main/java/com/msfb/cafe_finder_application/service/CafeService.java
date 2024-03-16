@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface CafeService {
     void createCafe(CafeRequest cafeRequest);
-    Cafe getCafeById(String id);
+    Cafe findCafeById(String id);
     Page<Cafe> getAllCafes(PageCafeRequest request);
     List<Cafe> getCafeByCafeName(String cafeName);
     void updateCafe(UpdateCafeRequest cafeRequest);

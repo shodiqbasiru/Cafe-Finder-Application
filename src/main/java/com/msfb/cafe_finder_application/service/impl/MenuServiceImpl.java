@@ -24,7 +24,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public void createMenu(MenuRequest request) {
-        Cafe cafe = cafeService.getCafeById(request.getCafeId());
+        Cafe cafe = cafeService.findCafeById(request.getCafeId());
         Menu menu = Menu.builder()
                 .id(UUID.randomUUID().toString())
                 .menuName(request.getMenuName())
@@ -77,7 +77,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public void deleteById(String id) {
-        findById(id);
-        menuRepository.deleteMenuById(id);
+        Menu menu = findById(id);
+        menuRepository.deleteMenuById(menu.getId());
     }
 }
