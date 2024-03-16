@@ -1,5 +1,6 @@
 package com.msfb.cafe_finder_application.controller;
 
+import com.msfb.cafe_finder_application.constant.RouteApiConstant;
 import com.msfb.cafe_finder_application.dto.request.CafeRequest;
 import com.msfb.cafe_finder_application.dto.request.PageCafeRequest;
 import com.msfb.cafe_finder_application.dto.request.UpdateCafeRequest;
@@ -18,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/cafes")
+@RequestMapping(RouteApiConstant.CAFE_API)
 public class CafeController {
     private final CafeService cafeService;
 
