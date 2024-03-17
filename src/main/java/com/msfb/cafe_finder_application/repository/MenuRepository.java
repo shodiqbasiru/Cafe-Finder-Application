@@ -18,8 +18,8 @@ public interface MenuRepository extends JpaRepository<Menu, String>{
             value = "INSERT INTO tb_menu VALUES" +
                     "(" +
                     ":#{#menu.id}, " +
-                    ":#{#menu.menuName}, " +
                     ":#{#menu.description}, " +
+                    ":#{#menu.menuName}, " +
                     ":#{#menu.price}, " +
                     ":#{#menu.cafe.id}" +
                     ")"

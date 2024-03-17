@@ -4,4 +4,5 @@ public class RouteApi {
     public static final String CAFE_API = "/api/cafes";
     public static final String MENU_API = "/api/menus";
     public static final String REVIEW_API = "/api/reviews";
+    public static final String AUTH_API = "/api/auth";
 }

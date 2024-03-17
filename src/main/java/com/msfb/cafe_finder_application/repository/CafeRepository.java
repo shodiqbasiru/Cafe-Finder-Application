@@ -14,17 +14,16 @@ import java.util.Optional;
 
 @Repository
 public interface CafeRepository extends JpaRepository<Cafe, String>, JpaSpecificationExecutor<Cafe>{
-
     @Modifying
     @Transactional
     @Query(nativeQuery = true,
             value = "INSERT INTO tb_cafe VALUES" +
                     "(" +
                     ":#{#cafe.id}, " +
-                    ":#{#cafe.cafeName}, " +
                     ":#{#cafe.address}, " +
-                    ":#{#cafe.phoneNumber}, " +
+                    ":#{#cafe.cafeName}, " +
                     ":#{#cafe.location}, " +
+                    ":#{#cafe.phoneNumber}, " +
                     ":#{#cafe.urlLocation}" +
                     ")"
     )
@@ -42,10 +41,10 @@ public interface CafeRepository extends JpaRepository<Cafe, String>, JpaSpecific
     @Transactional
     @Query(nativeQuery = true,
             value = "UPDATE tb_cafe SET " +
-                    "cafe_name = :#{#cafe.cafeName}, " +
                     "address = :#{#cafe.address}, " +
-                    "phone_number = :#{#cafe.phoneNumber}, " +
+                    "cafe_name = :#{#cafe.cafeName}, " +
                     "location = :#{#cafe.location}, " +
+                    "phone_number = :#{#cafe.phoneNumber}, " +
                     "url_location = :#{#cafe.urlLocation} " +
                     "WHERE id = :#{#cafe.id}"
     )
