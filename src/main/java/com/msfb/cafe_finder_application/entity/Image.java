@@ -1,5 +1,7 @@
 package com.msfb.cafe_finder_application.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.msfb.cafe_finder_application.constant.TableConstant;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,9 +21,6 @@ public class Image {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "description", nullable = false)
-    private String description;
-
     @Column(name = "path", nullable = false)
     private String path;
 
@@ -31,6 +30,11 @@ public class Image {
     @Column(name = "content_type", nullable = false)
     private String contentType;
 
+    @JsonManagedReference
+    @OneToOne(mappedBy = "image")
+    private Menu menu;
+
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "cafe_id", nullable = false)
     private Cafe cafe;

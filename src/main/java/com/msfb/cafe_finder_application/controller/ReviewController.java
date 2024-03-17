@@ -1,6 +1,6 @@
 package com.msfb.cafe_finder_application.controller;
 
-import com.msfb.cafe_finder_application.constant.RouteApiConstant;
+import com.msfb.cafe_finder_application.constant.RouteApi;
 import com.msfb.cafe_finder_application.dto.request.ReviewRequest;
 import com.msfb.cafe_finder_application.dto.request.UpdateReviewRequest;
 import com.msfb.cafe_finder_application.dto.response.CommonResponse;
@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(RouteApiConstant.REVIEW_API)
+@RequestMapping(RouteApi.REVIEW_API)
 public class ReviewController {
     private final ReviewService reviewService;
 

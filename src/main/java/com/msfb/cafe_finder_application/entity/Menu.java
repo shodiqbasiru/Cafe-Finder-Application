@@ -30,4 +30,9 @@ public class Menu {
     @ManyToOne
     @JoinColumn(name = "cafe_id", nullable = false)
     private Cafe cafe;
+
+    @JsonBackReference
+    @OneToOne
+    @JoinColumn(name = "image_id", unique = true)
+    private Image image;
 }

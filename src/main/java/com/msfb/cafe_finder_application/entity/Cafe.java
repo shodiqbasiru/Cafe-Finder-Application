@@ -21,7 +21,7 @@ public class Cafe {
     @Column(name = "cafe_name", nullable = false)
     private String cafeName;
 
-    @Column(name = "phone_number", nullable = false)
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     @Column(name = "location", nullable = false)
@@ -40,4 +40,9 @@ public class Cafe {
     @JsonManagedReference
     @OneToMany(mappedBy = "cafe")
     private List<Review> reviews;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "cafe")
+    private List<Image> images;
+
 }

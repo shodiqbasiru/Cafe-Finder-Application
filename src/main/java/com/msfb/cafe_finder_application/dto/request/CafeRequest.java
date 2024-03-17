@@ -1,6 +1,10 @@
 package com.msfb.cafe_finder_application.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,4 +17,7 @@ public class CafeRequest {
     private String location;
     private String address;
     private String urlLocation;
+
+    @JsonIgnore
+    private List<MultipartFile> images;
 }

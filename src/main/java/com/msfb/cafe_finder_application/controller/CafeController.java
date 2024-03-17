@@ -1,6 +1,7 @@
 package com.msfb.cafe_finder_application.controller;
 
-import com.msfb.cafe_finder_application.constant.RouteApiConstant;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.msfb.cafe_finder_application.constant.RouteApi;
 import com.msfb.cafe_finder_application.dto.request.CafeRequest;
 import com.msfb.cafe_finder_application.dto.request.PageCafeRequest;
 import com.msfb.cafe_finder_application.dto.request.UpdateCafeRequest;
@@ -14,26 +15,39 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(RouteApiConstant.CAFE_API)
+@RequestMapping(RouteApi.CAFE_API)
 public class CafeController {
     private final CafeService cafeService;
+    private final ObjectMapper objectMapper;
 
     @PostMapping(
-            consumes = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<CommonResponse<Cafe>> create(@RequestBody CafeRequest request) {
-       cafeService.createCafe(request);
-        CommonResponse<Cafe> response = CommonResponse.<Cafe>builder()
-                .statusCode(HttpStatus.CREATED.value())
-                .message("Created a new cafe successfully")
-                .build();
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<CommonResponse<Cafe>> create(
+            @RequestPart(name = "cafe") String jsonCafe,
+            @RequestPart(name = "images", required = false) List<MultipartFile> images
+    ) {
+        CommonResponse.CommonResponseBuilder<Cafe> builder = CommonResponse.builder();
+        try {
+            CafeRequest request = objectMapper.readValue(jsonCafe, CafeRequest.class);
+            request.setImages(images);
+
+            cafeService.createCafe(request);
+            builder.statusCode(HttpStatus.CREATED.value());
+            builder.message("Created Data Successfully");
+            return ResponseEntity.status(HttpStatus.CREATED).body(builder.build());
+        } catch (Exception e) {
+            builder.statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            builder.message(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(builder.build());
+        }
     }
 
     @GetMapping(
@@ -118,16 +132,27 @@ public class CafeController {
     }
 
     @PutMapping(
-            consumes = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<CommonResponse<Cafe>> update(@RequestBody UpdateCafeRequest request) {
-        cafeService.updateCafe(request);
-        CommonResponse<Cafe> response = CommonResponse.<Cafe>builder()
-                .statusCode(HttpStatus.OK.value())
-                .message("Cafe updated successfully")
-                .build();
-        return ResponseEntity.ok(response);
+    public ResponseEntity<CommonResponse<Cafe>> update(
+            @RequestPart(name = "cafe") String jsonCafe,
+            @RequestPart(name = "image", required = false) List<MultipartFile> images
+    ) {
+        CommonResponse.CommonResponseBuilder<Cafe> builder = CommonResponse.builder();
+        try {
+            UpdateCafeRequest request = objectMapper.readValue(jsonCafe, UpdateCafeRequest.class);
+            request.setImages(images);
+
+            cafeService.updateCafe(request);
+            builder.statusCode(HttpStatus.CREATED.value());
+            builder.message("Updated Data Successfully");
+            return ResponseEntity.status(HttpStatus.CREATED).body(builder.build());
+        } catch (Exception e) {
+            builder.message(e.getMessage());
+            builder.statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(builder.build());
+        }
     }
 
     @DeleteMapping(

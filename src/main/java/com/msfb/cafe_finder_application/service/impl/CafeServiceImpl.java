@@ -4,8 +4,10 @@ import com.msfb.cafe_finder_application.dto.request.CafeRequest;
 import com.msfb.cafe_finder_application.dto.request.PageCafeRequest;
 import com.msfb.cafe_finder_application.dto.request.UpdateCafeRequest;
 import com.msfb.cafe_finder_application.entity.Cafe;
+import com.msfb.cafe_finder_application.entity.Image;
 import com.msfb.cafe_finder_application.repository.CafeRepository;
 import com.msfb.cafe_finder_application.service.CafeService;
+import com.msfb.cafe_finder_application.service.ImageService;
 import com.msfb.cafe_finder_application.specification.CafeSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,6 +27,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class CafeServiceImpl implements CafeService {
     private final CafeRepository cafeRepository;
+    private final ImageService imageService;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -37,8 +40,18 @@ public class CafeServiceImpl implements CafeService {
                 .address(cafeRequest.getAddress())
                 .urlLocation(cafeRequest.getUrlLocation())
                 .build();
-
         cafeRepository.insert(cafe);
+
+        if (cafeRequest.getImages() != null) {
+            cafeRequest.getImages().forEach(image -> {
+                Image newImage = imageService.create(image);
+                Cafe cafeById = findCafeById(cafe.getId());
+                if (newImage != null) {
+                    newImage.setCafe(cafeById);
+                }
+            });
+        }
+
     }
 
     @Transactional(readOnly = true)
@@ -77,8 +90,19 @@ public class CafeServiceImpl implements CafeService {
         cafe.setAddress(request.getAddress());
         cafe.setUrlLocation(request.getUrlLocation());
 
-        cafeRepository.updateCafe(cafe);
+        if (request.getImages() != null) {
+            request.getImages().forEach(image -> {
+                Image newImage = imageService.create(image);
+                if (newImage != null) {
+                    newImage.setCafe(cafe);
+                }
 
+                cafe.getImages().stream()
+                        .filter(img-> img.getCafe().getId().equals(cafe.getId()))
+                        .forEach(img -> imageService.deleteById(img.getId()));
+            });
+        }
+        cafeRepository.updateCafe(cafe);
     }
 
     @Transactional(rollbackFor = Exception.class)
