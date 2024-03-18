@@ -34,8 +34,7 @@ public class Image {
     @OneToOne(mappedBy = "image")
     private Menu menu;
 
-    @JsonBackReference
-    @ManyToOne
-    @JoinColumn(name = "cafe_id", nullable = false)
+    @JsonManagedReference
+    @OneToOne(mappedBy = "image")
     private Cafe cafe;
 }

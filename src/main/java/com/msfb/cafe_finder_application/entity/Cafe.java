@@ -1,5 +1,6 @@
 package com.msfb.cafe_finder_application.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.msfb.cafe_finder_application.constant.TableConstant;
 import jakarta.persistence.*;
@@ -33,6 +34,16 @@ public class Cafe {
     @Column(name = "url_location", nullable = false)
     private String urlLocation;
 
+    @JsonBackReference
+    @OneToOne
+    @JoinColumn(name = "image_id")
+    private Image image;
+
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private CafeOwner owner;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "cafe")
     private List<Menu> menus;
@@ -40,9 +51,5 @@ public class Cafe {
     @JsonManagedReference
     @OneToMany(mappedBy = "cafe")
     private List<Review> reviews;
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "cafe")
-    private List<Image> images;
 
 }

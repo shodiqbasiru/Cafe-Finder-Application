@@ -20,5 +20,5 @@ public class UpdateCafeRequest {
     private String urlLocation;
 
     @JsonIgnore
-    private List<MultipartFile> images;
+    private MultipartFile image;
 }

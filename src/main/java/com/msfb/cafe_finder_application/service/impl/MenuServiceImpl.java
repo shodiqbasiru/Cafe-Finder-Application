@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +36,7 @@ public class MenuServiceImpl implements MenuService {
             image = imageService.create(request.getImage());
             builder.image(image);
         }
+        builder.id(UUID.randomUUID().toString());
         builder.menuName(request.getMenuName());
         builder.price(request.getPrice());
         builder.description(request.getDescription());

@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +26,7 @@ public class MenuController {
     private final MenuService menuService;
     private final ObjectMapper objectMapper;
 
+    @PreAuthorize("hasAnyRole('OWNER_CAFE','ADMIN') ")
     @PostMapping(
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -101,6 +103,7 @@ public class MenuController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('OWNER_CAFE','ADMIN') ")
     @DeleteMapping(
             path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE

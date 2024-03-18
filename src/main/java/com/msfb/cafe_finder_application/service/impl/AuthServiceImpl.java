@@ -2,22 +2,22 @@ package com.msfb.cafe_finder_application.service.impl;
 
 import com.msfb.cafe_finder_application.constant.RoleEnum;
 import com.msfb.cafe_finder_application.dto.request.AuthRequest;
+import com.msfb.cafe_finder_application.dto.response.LoginResponse;
 import com.msfb.cafe_finder_application.dto.response.RegisterResponse;
 import com.msfb.cafe_finder_application.entity.Account;
 import com.msfb.cafe_finder_application.entity.CafeOwner;
 import com.msfb.cafe_finder_application.entity.Role;
 import com.msfb.cafe_finder_application.entity.User;
 import com.msfb.cafe_finder_application.repository.AccountRepository;
-import com.msfb.cafe_finder_application.service.AuthService;
-import com.msfb.cafe_finder_application.service.OwnerService;
-import com.msfb.cafe_finder_application.service.RoleService;
-import com.msfb.cafe_finder_application.service.UserService;
+import com.msfb.cafe_finder_application.service.*;
 import jakarta.annotation.PostConstruct;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,9 +33,10 @@ public class AuthServiceImpl implements AuthService {
     private final RoleService roleService;
     private final OwnerService ownerService;
     private final UserService userService;
+    private final JwtService jwtService;
 
     private final PasswordEncoder passwordEncoder;
-
+    private final AuthenticationManager authenticationManager;
 
 
     @Value("${cafe_finder.username.admin}")
@@ -134,5 +135,24 @@ public class AuthServiceImpl implements AuthService {
                 .username(account.getUsername())
                 .roles(roles)
                 .build();
+    }
+
+    @Override
+    public LoginResponse login(AuthRequest request) {
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                request.getUsername(),
+                request.getPassword()
+        );
+        Authentication authenticate = authenticationManager.authenticate(authentication);
+        SecurityContextHolder.getContext().setAuthentication(authenticate);
+        Account account = (Account) authenticate.getPrincipal();
+
+        String token = jwtService.generateToken(account);
+        return LoginResponse.builder()
+                .username(account.getUsername())
+                .token(token)
+                .roles(account.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList())
+                .build();
+
     }
 }

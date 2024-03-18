@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
 public class ReviewController {
     private final ReviewService reviewService;
 
+    @PreAuthorize("hasAnyRole('OWNER_CAFE','ADMIN','USER') ")
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -49,6 +51,7 @@ public class ReviewController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAnyRole('OWNER_CAFE','ADMIN','USER') ")
     @PutMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -62,6 +65,7 @@ public class ReviewController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAnyRole('OWNER_CAFE','ADMIN','USER') ")
     @DeleteMapping(
             path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE

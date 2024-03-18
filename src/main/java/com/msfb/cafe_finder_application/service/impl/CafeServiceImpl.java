@@ -4,10 +4,12 @@ import com.msfb.cafe_finder_application.dto.request.CafeRequest;
 import com.msfb.cafe_finder_application.dto.request.PageCafeRequest;
 import com.msfb.cafe_finder_application.dto.request.UpdateCafeRequest;
 import com.msfb.cafe_finder_application.entity.Cafe;
+import com.msfb.cafe_finder_application.entity.CafeOwner;
 import com.msfb.cafe_finder_application.entity.Image;
 import com.msfb.cafe_finder_application.repository.CafeRepository;
 import com.msfb.cafe_finder_application.service.CafeService;
 import com.msfb.cafe_finder_application.service.ImageService;
+import com.msfb.cafe_finder_application.service.OwnerService;
 import com.msfb.cafe_finder_application.specification.CafeSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,30 +30,28 @@ import java.util.UUID;
 public class CafeServiceImpl implements CafeService {
     private final CafeRepository cafeRepository;
     private final ImageService imageService;
+    private final OwnerService ownerService;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void createCafe(CafeRequest cafeRequest) {
-        Cafe cafe = Cafe.builder()
-                .id(UUID.randomUUID().toString())
-                .cafeName(cafeRequest.getCafeName())
-                .phoneNumber(cafeRequest.getPhoneNumber())
-                .location(cafeRequest.getLocation())
-                .address(cafeRequest.getAddress())
-                .urlLocation(cafeRequest.getUrlLocation())
-                .build();
-        cafeRepository.insert(cafe);
-
-        if (cafeRequest.getImages() != null) {
-            cafeRequest.getImages().forEach(image -> {
-                Image newImage = imageService.create(image);
-                Cafe cafeById = findCafeById(cafe.getId());
-                if (newImage != null) {
-                    newImage.setCafe(cafeById);
-                }
-            });
+        CafeOwner owner = ownerService.getById(cafeRequest.getOwnerId());
+        if (cafeRequest.getImage() == null || cafeRequest.getImage().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Image is required");
         }
+        Image image = imageService.create(cafeRequest.getImage());
 
+        Cafe.CafeBuilder cafeBuilder = Cafe.builder();
+        cafeBuilder.id(UUID.randomUUID().toString());
+        cafeBuilder.cafeName(cafeRequest.getCafeName());
+        cafeBuilder.location(cafeRequest.getLocation());
+        cafeBuilder.phoneNumber(cafeRequest.getPhoneNumber());
+        cafeBuilder.address(cafeRequest.getAddress());
+        cafeBuilder.urlLocation(cafeRequest.getUrlLocation());
+        cafeBuilder.owner(owner);
+        cafeBuilder.image(image);
+
+        cafeRepository.insert(cafeBuilder.build());
     }
 
     @Transactional(readOnly = true)
@@ -83,6 +83,7 @@ public class CafeServiceImpl implements CafeService {
     @Override
     public void updateCafe(UpdateCafeRequest request) {
         Cafe cafe = findCafeById(request.getId());
+        Image oldImage = cafe.getImage();
 
         cafe.setCafeName(request.getCafeName());
         cafe.setLocation(request.getLocation());
@@ -90,17 +91,13 @@ public class CafeServiceImpl implements CafeService {
         cafe.setAddress(request.getAddress());
         cafe.setUrlLocation(request.getUrlLocation());
 
-        if (request.getImages() != null) {
-            request.getImages().forEach(image -> {
-                Image newImage = imageService.create(image);
-                if (newImage != null) {
-                    newImage.setCafe(cafe);
-                }
+        if (request.getImage() != null) {
+            Image image = imageService.create(request.getImage());
+            cafe.setImage(image);
 
-                cafe.getImages().stream()
-                        .filter(img-> img.getCafe().getId().equals(cafe.getId()))
-                        .forEach(img -> imageService.deleteById(img.getId()));
-            });
+            if (oldImage != null) {
+                imageService.deleteById(oldImage.getId());
+            }
         }
         cafeRepository.updateCafe(cafe);
     }

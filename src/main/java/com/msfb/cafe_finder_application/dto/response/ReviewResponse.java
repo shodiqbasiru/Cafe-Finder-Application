@@ -13,4 +13,5 @@ public class ReviewResponse {
     private String comment;
     private String dateReview;
     private String cafeId;
+    private String userId;
 }

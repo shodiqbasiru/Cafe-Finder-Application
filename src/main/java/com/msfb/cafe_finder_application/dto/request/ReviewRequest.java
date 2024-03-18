@@ -11,4 +11,5 @@ public class ReviewRequest {
     private String cafeId;
     private Double rating;
     private String comment;
+    private String userId;
 }

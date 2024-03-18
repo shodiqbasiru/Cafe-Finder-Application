@@ -16,13 +16,14 @@ public interface ReviewRepository extends JpaRepository<Review, String>{
     @Modifying
     @Transactional
     @Query(nativeQuery = true,
-            value = "INSERT INTO tb_review VALUES" +
+            value = "INSERT INTO tb_review(id, comment, date_review, rating, cafe_id, user_id) VALUES" +
                     "(" +
                     ":#{#review.id}," +
                     ":#{#review.comment}," +
                     ":#{#review.dateReview},"  +
                     ":#{#review.rating}," +
-                    ":#{#review.cafe.id}" +
+                    ":#{#review.cafe.id}, " +
+                    ":#{#review.user.id}" +
                     ")"
     )
    void insert(Review review);

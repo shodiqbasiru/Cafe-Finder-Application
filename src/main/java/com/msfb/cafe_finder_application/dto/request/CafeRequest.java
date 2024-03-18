@@ -17,7 +17,8 @@ public class CafeRequest {
     private String location;
     private String address;
     private String urlLocation;
+    private String ownerId;
 
     @JsonIgnore
-    private List<MultipartFile> images;
+    private MultipartFile image;
 }

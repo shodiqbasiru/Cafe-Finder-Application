@@ -1,5 +1,6 @@
 package com.msfb.cafe_finder_application.service.impl;
 
+import com.msfb.cafe_finder_application.entity.Cafe;
 import com.msfb.cafe_finder_application.entity.Image;
 import com.msfb.cafe_finder_application.repository.ImageRepository;
 import com.msfb.cafe_finder_application.service.ImageService;
@@ -62,6 +63,7 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
+   @Transactional(readOnly = true)
     @Override
     public Resource getById(String id) {
         try {
@@ -76,6 +78,7 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteById(String id) {
         try {

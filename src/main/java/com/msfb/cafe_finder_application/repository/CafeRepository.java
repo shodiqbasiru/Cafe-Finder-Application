@@ -17,14 +17,16 @@ public interface CafeRepository extends JpaRepository<Cafe, String>, JpaSpecific
     @Modifying
     @Transactional
     @Query(nativeQuery = true,
-            value = "INSERT INTO tb_cafe VALUES" +
+            value = "INSERT INTO tb_cafe(id, address, cafe_name, location, phone_number, url_location, owner_id, image_id) VALUES" +
                     "(" +
                     ":#{#cafe.id}, " +
                     ":#{#cafe.address}, " +
                     ":#{#cafe.cafeName}, " +
                     ":#{#cafe.location}, " +
                     ":#{#cafe.phoneNumber}, " +
-                    ":#{#cafe.urlLocation}" +
+                    ":#{#cafe.urlLocation}, " +
+                    ":#{#cafe.owner.id}, " +
+                    ":#{#cafe.image.id}" +
                     ")"
     )
     void insert(Cafe cafe);

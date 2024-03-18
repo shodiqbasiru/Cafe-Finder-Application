@@ -3,6 +3,7 @@ package com.msfb.cafe_finder_application.controller;
 import com.msfb.cafe_finder_application.constant.RouteApi;
 import com.msfb.cafe_finder_application.dto.request.AuthRequest;
 import com.msfb.cafe_finder_application.dto.response.CommonResponse;
+import com.msfb.cafe_finder_application.dto.response.LoginResponse;
 import com.msfb.cafe_finder_application.dto.response.RegisterResponse;
 import com.msfb.cafe_finder_application.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -49,4 +50,20 @@ public class AuthController {
                 .build();
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping(
+            path = "/login",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<CommonResponse<LoginResponse>> login(@RequestBody AuthRequest request) {
+        LoginResponse loginResponse = authService.login(request);
+        CommonResponse<LoginResponse> response = CommonResponse.<LoginResponse>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message("User logged in successfully")
+                .data(loginResponse)
+                .build();
+        return ResponseEntity.ok(response);
+    }
 }
+
