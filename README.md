@@ -1,18 +1,13 @@
 # Cafe Finder Application - Java Spring Boot
 
-Aplikasi ini merupakan RESTful API yang dibangun menggunakan bahasa pemrograman 
-Java dan mengimplementasikan teknologi seperti Spring IoC, Java Stream, dan SQL Native Query.
+This application is a RESTful API built using the Java programming language and implements technologies such as Spring IoC, Java Stream, and SQL Native Query.
 
-Cafe Finder Application merupakan aplikasi yang memungkinkan pengguna untuk mencari cafe berdasarkan
-lokasi. Dan Aplikasi ini menyediakan fitur Register dan Login untuk Pengguna biasa dan Owner Cafe.
-Pengguna terbagi menjadi tiga jenis, yaitu pengguna biasa, owner dan admin. 
-1. Pengguna biasa tanpa mendaftar, hanya dapat mengakses fitur pencarian cafe, melihat semua 
-cafe yang ada, melihat menu cafe, dan melihat Review dari cafe. Pengguna biasa yang sudah mendaftar, 
-dapat memberikan review pada cafe yang ada.
-2. Owner Cafe dapat mendaftar cafe yang dimilikinya, dan dapat mengelola cafe yang dimilikinya.
-3. Admin dapat mengelola semua cafe yang ada, dan dapat mengelola semua pengguna yang ada.
+The Cafe Finder Application is an application that allows users to search for cafes based on location. And this application provides Register and Login features for regular Users and Cafe Owners. Users are divided into three types: regular users, owners, and admins.
+1. Regular users without registering can only access the cafe search feature, view all cafes available, view cafe menus, and view cafe reviews. Registered regular users can provide reviews for existing cafes.
+2. Cafe Owners can register their cafes and manage them.
+3. Admins can manage all existing cafes and all users.
 
-### Teknologi yang Digunakan
+### Technologies Used
 1. *Spring IoC*
 2. *Java Stream*
 3. *SQL Native Query*
@@ -21,15 +16,15 @@ dapat memberikan review pada cafe yang ada.
 6. *Spring Data JPA*
 7. *PostgresSql*
 
-### Fitur Aplikasi
-1. *Register dan Login*
-2. *Pencarian Cafe*
-3. *Melihat Semua Cafe*
-4. *Melihat Menu Cafe*
-5. *Memberikan Review pada Cafe*
-6. *Mendaftar Cafe*
-7. *Mengelola Cafe*
-8. *Mengelola Pengguna*
-9. *Mengelola Review*
-10. *Mengelola Menu*
-11. *Mengelola Cafe*
+### Application Features
+1. *Register and Login*
+2. *Cafe Search*
+3. *View All Cafes*
+4. *View Cafe Menu*
+5. *Provide Review on Cafe*
+6. *Register Cafe*
+7. *Manage Cafe*
+8. *Manage Users*
+9. *Manage Reviews*
+10. *Manage Menu*
+11. *Manage Cafe*
